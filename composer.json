@@ -1,0 +1,21 @@
+{
+    "name": "olegtronics/hello-world",
+    "description": "My first composer project",
+    "type": "nonce-object",
+    "license": "free",
+    "authors": [
+        {
+            "name": "olegoil",
+            "email": "xanatosdark@hotmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "HelloWorld": "src/"
+        }
+    }
+}
