@@ -25,10 +25,29 @@ defined('ABSPATH') or die('Hey you cant access this file, you silly man!');
 
 class AlecadddPlugin
 {
+    // public
+    // can be accessed everywhere
+
+    // protected
+    // can be accessed only within the class itself or extensions of that class
+
+    // private
+    // can be accessed only within the class itself
 
     function __construct()
     {
+        $this->print_stuff();
         add_action( 'init', array( $this, 'custom_post_type' ));
+    }
+
+    protected function create_post_type()
+    {
+        add_action('admin_enqueue_scripts', array($this, 'enqueue'));
+    }
+
+    function register()
+    {
+
     }
 
     function activate()
@@ -49,11 +68,35 @@ class AlecadddPlugin
     {
         register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
     }
+
+    function enqueue()
+    {
+        // enqueue all our scripts
+        wp_enqueue_style('mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__ ));
+        wp_enqueue_script('mypluginscript', plugins_url( '/assets/myscript.js', __FILE__ ));
+    }
+
+    private function print_stuff()
+    {
+        echo 'Test';
+    }
+}
+
+class SecondClass extends AlecadddPlugin
+{
+    function register_post_type()
+    {
+        $this->create_post_type();
+    }
 }
 
 if ( class_exists( 'AlecadddPlugin' )) {
     $alecadddPlugin = new AlecadddPlugin();
+    $alecadddPlugin->register();
 }
+
+$secondClass = new SecondClass();
+$secondClass->register_post_type();
 
 // activation
 register_activation_hook( __FILE__, array($alecadddPlugin, 'activate') );
